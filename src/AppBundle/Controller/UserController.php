@@ -10,13 +10,14 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Class UserController
+ *
+ * @Rest\NamePrefix("api_")
+ * @Rest\RouteResource("User")
+ */
 class UserController extends BaseRestController
 {
-    /**
-     * @Rest\Get("/user")
-     * @param User $user
-     * @return User
-     */
     public function getAction(User $user)
     {
         return $user;
