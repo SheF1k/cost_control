@@ -18,6 +18,12 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class UserController extends BaseRestController
 {
+    /**
+     * @param User $user
+     * @return User
+     *
+     * @Rest\View(serializerGroups={"default"})
+     */
     public function getAction(User $user)
     {
         return $user;
