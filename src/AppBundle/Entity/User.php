@@ -10,7 +10,6 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-
 /**
  * @ORM\Entity
  * @ORM\Table(name="user")
@@ -39,32 +38,11 @@ class User
      */
     private $password;
 
-    /**
-     * @param mixed $fullName
-     */
-    public function setFullName($fullName)
-    {
-        $this->fullName = $fullName;
-    }
 
     /**
-     * @param mixed $email
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-    }
-
-    /**
-     * @param mixed $password
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-    }
-
-    /**
-     * @return mixed
+     * Get id.
+     *
+     * @return int
      */
     public function getId()
     {
@@ -72,7 +50,23 @@ class User
     }
 
     /**
-     * @return mixed
+     * Set fullName.
+     *
+     * @param string $fullName
+     *
+     * @return User
+     */
+    public function setFullName($fullName)
+    {
+        $this->fullName = $fullName;
+
+        return $this;
+    }
+
+    /**
+     * Get fullName.
+     *
+     * @return string
      */
     public function getFullName()
     {
@@ -80,7 +74,23 @@ class User
     }
 
     /**
-     * @return mixed
+     * Set email.
+     *
+     * @param string $email
+     *
+     * @return User
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email.
+     *
+     * @return string
      */
     public function getEmail()
     {
@@ -88,12 +98,26 @@ class User
     }
 
     /**
-     * @return mixed
+     * Set password.
+     *
+     * @param string $password
+     *
+     * @return User
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get password.
+     *
+     * @return string
      */
     public function getPassword()
     {
         return $this->password;
     }
-
-
 }
