@@ -9,14 +9,20 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
+ * @JMS\ExclusionPolicy("all")
  * @ORM\Entity
  * @ORM\Table(name="user")
  */
 class User
 {
     /**
+     * @var int
+     *
+     * @JMS\Expose
+     * @JMS\Groups({"default", "Default", "auth"})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
@@ -24,16 +30,22 @@ class User
     private $id;
 
     /**
+     * @JMS\Expose
+     * @JMS\Groups({"default", "auth"})
      * @ORM\Column(type="string", nullable=false)
      */
     private $fullName;
 
     /**
+     * @JMS\Expose
+     * @JMS\Groups({"default", "auth"})
      * @ORM\Column(type="string", nullable=false)
      */
     private $email;
 
     /**
+     * @JMS\Expose
+     * @JMS\Groups({"default", "auth"})
      * @ORM\Column(type="string", nullable=false)
      */
     private $password;
