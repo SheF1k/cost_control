@@ -28,4 +28,37 @@ class UserController extends BaseRestController
     {
         return $user;
     }
+
+    /**
+     * Create a new user.
+     * @param Request $request
+     * @return \FOS\RestBundle\View\View|\Symfony\Component\Form\Form|\Symfony\Component\Form\FormInterface
+     *
+     */
+    public function postAction(Request $request)
+    {
+        $groups = [
+            'serializerGroups' => [
+                'default',
+                'auth'
+            ],
+        ];
+
+        return $this->handleForm($request, new UserForm(), new User(), $groups);
+    }
+
+    /**
+     * Delete user by id.
+     *
+     * @param User $user
+     * @return Response
+     */
+    public function deleteAction(User $user)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($user);
+        $em->flush();
+
+        return null;
+    }
 }
