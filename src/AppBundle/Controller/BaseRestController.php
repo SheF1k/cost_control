@@ -314,7 +314,7 @@ abstract class BaseRestController extends FOSRestController
         );
 
         if ($cleanForm) {
-            $this->cleanForm($request->request->all(), $form);
+            $this->cleanForm($request, $form);
         }
 
         $form->submit($request->request->all());
