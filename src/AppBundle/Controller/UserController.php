@@ -42,9 +42,16 @@ class UserController extends BaseRestController
                 'default',
                 'auth'
             ],
+            'formOptions' => [
+                'validation_groups' => [
+                    'default',
+                    'Default',
+                    'registration'
+                ],
+            ],
         ];
 
-        return $this->handleForm($request, new UserForm(), new User(), $groups);
+        return $this->handleForm($request, UserForm::class, new User(), $groups);
     }
 
     /**

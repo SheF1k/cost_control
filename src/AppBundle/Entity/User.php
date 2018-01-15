@@ -10,6 +10,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @JMS\ExclusionPolicy("all")
@@ -33,6 +34,7 @@ class User
      * @JMS\Expose
      * @JMS\Groups({"default", "auth"})
      * @ORM\Column(type="string", nullable=false)
+     * @Assert\NotBlank()
      */
     private $fullName;
 
@@ -40,6 +42,7 @@ class User
      * @JMS\Expose
      * @JMS\Groups({"default", "auth"})
      * @ORM\Column(type="string", nullable=false)
+     * @Assert\NotBlank()
      */
     private $email;
 
@@ -49,6 +52,13 @@ class User
      * @ORM\Column(type="string", nullable=false)
      */
     private $password;
+
+    /**
+     * @var string
+     *
+     * @Assert\NotBlank(groups={"registration"})
+     */
+    private $plainPassword = null;
 
 
     /**
@@ -131,5 +141,29 @@ class User
     public function getPassword()
     {
         return $this->password;
+    }
+
+    /**
+     * Set plainPassword.
+     *
+     * @param string plainPassword
+     *
+     * @return User
+     */
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    /**
+     * Get plainPassword.
+     *
+     * @return string
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
     }
 }

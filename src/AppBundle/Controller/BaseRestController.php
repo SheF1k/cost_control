@@ -286,14 +286,14 @@ abstract class BaseRestController extends FOSRestController
      * Handle form, this method is used by both POST and PUT action methods.
      *
      * @param Request      $request
-     * @param AbstractType $formType
+     * @param string $formType
      * @param object       $entity
      * @param array        $options
      * @param bool         $cleanForm
      *
      * @return View|Form|\Symfony\Component\Form\FormInterface
      */
-    public function handleForm(Request $request, AbstractType $formType, $entity, array $options = array(), $cleanForm = false, $dryRun = false)
+    public function handleForm(Request $request,  $formType, $entity, array $options = array(), $cleanForm = false, $dryRun = false)
     {
         $view = new View();
         $context = new Context();
@@ -306,7 +306,7 @@ abstract class BaseRestController extends FOSRestController
         $formOptions = isset($options['formOptions']) ? $options['formOptions'] : array();
 
         /** @var \Symfony\Component\Form\Form $form */
-        $form = $this->getFormFactory()->createNamed(null, $formType, $entity,
+        $form = $this->getFormFactory()->create( $formType, $entity,
             array_merge(
                 array('csrf_protection' => false),
                 $formOptions
@@ -314,10 +314,10 @@ abstract class BaseRestController extends FOSRestController
         );
 
         if ($cleanForm) {
-            $this->cleanForm($request, $form);
+            $this->cleanForm($request->request->all(), $form);
         }
 
-        $form->submit($request);
+        $form->submit($request->request->all());
 
         if ($form->isValid()) {
             if ($dryRun) {
