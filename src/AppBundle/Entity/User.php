@@ -44,6 +44,7 @@ class User implements UserInterface
      * @JMS\Groups({"default", "auth"})
      * @ORM\Column(type="string", nullable=false)
      * @Assert\NotBlank()
+     * @Assert\Email()
      */
     private $email;
 
