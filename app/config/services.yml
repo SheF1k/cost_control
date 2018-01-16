@@ -35,8 +35,3 @@ services:
     #         $someArgument: 'some_value'
     jms_serializer.camel_case_naming_strategy:
             class: 'JMS\Serializer\Naming\IdenticalPropertyNamingStrategy'
-    app.doctrine.user_entity_listener:
-            class: AppBundle\Doctrine\UserEntityListener
-            autowire: true
-            tags:
-                - { name: doctrine.event_subscriber }

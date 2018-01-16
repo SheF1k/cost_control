@@ -1,0 +1,16 @@
+services:
+    app.api_key_user_provider:
+        class: AppBundle\Security\ApiKeyUserProvider
+        arguments: [ "@doctrine.orm.entity_manager"]
+    app.api_key_authenticator:
+        class:  AppBundle\Security\ApiKeyAuthenticator
+        public: false
+    app.api_token.service:
+        class: AppBundle\Service\ApiTokenService
+        arguments: ["@security.password_encoder"]
+    app.doctrine.user_entity_listener:
+        class: AppBundle\Doctrine\UserEntityListener
+        autowire: true
+        tags:
+            - { name: doctrine.event_subscriber }
+
