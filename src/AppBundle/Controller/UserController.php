@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Form\UserForm;
+use Doctrine\ORM\EntityRepository;
+use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -30,6 +32,24 @@ class UserController extends BaseRestController
             throw new NotFoundHttpException('User not found');
         }
         return $user;
+    }
+
+    /**
+     * Return users.
+     *
+     * @Rest\QueryParam(name="_sort")
+     * @Rest\QueryParam(name="_limit",  requirements="\d+", nullable=true, strict=true)
+     * @Rest\QueryParam(name="_offset", requirements="\d+", nullable=true, strict=true)
+     * @Rest\QueryParam(name="fullName", description="Full name")
+     * @Rest\QueryParam(name="email", description="email")
+     */
+    public function cgetAction(ParamFetcher $paramFetcher)
+    {
+        /** @var EntityRepository $repository */
+        $repository = $this->getRepository('AppBundle:User');
+        $paramFetcher = $paramFetcher->all();
+
+        return $this->matching($repository, $paramFetcher, null, ['default']);
     }
 
     /**
