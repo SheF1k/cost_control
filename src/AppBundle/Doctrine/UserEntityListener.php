@@ -3,16 +3,23 @@
 namespace AppBundle\Doctrine;
 
 use AppBundle\Entity\User;
+use AppBundle\Service\ApiTokenService;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserEntityListener implements EventSubscriber
 {
+    /**
+     * @var ApiTokenService $apiTokenService
+     */
+    private $apiTokenService;
+
     private $encoder;
 
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(ApiTokenService $apiTokenService, UserPasswordEncoderInterface $passwordEncoder)
     {
+        $this->apiTokenService = $apiTokenService;
         $this->encoder = $passwordEncoder;
     }
 
@@ -28,6 +35,7 @@ class UserEntityListener implements EventSubscriber
             return;
         }
         $this->encodePassword($entity);
+        $this->apiTokenService->generateApiToken($entity);
     }
 
     public function preUpdate(LifecycleEventArgs $args)

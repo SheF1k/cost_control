@@ -43,7 +43,9 @@ class User implements UserInterface
      * @JMS\Expose
      * @JMS\Groups({"default", "auth"})
      * @ORM\Column(type="string", nullable=false)
+     * @Assert\Email()
      * @Assert\NotBlank()
+     * @Assert\Length(max="255")
      */
     private $email;
 
@@ -60,6 +62,21 @@ class User implements UserInterface
      * @Assert\NotBlank(groups={"registration"})
      */
     private $plainPassword = null;
+
+    /**
+     * @JMS\Expose
+     * @JMS\Groups({"default", "auth"})
+     * @ORM\Column(type="string", nullable=true, options={"default" : "ROLE_USER"})
+     */
+    protected $role;
+
+    /**
+     * @JMS\Expose
+     * @JMS\Groups({"auth"})
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $accessToken;
+
 
 
     /**
@@ -186,7 +203,7 @@ class User implements UserInterface
      */
     public function getRoles()
     {
-        // TODO: Implement getRoles() method.
+        return array('ROLE_USER');
     }
 
     /**
@@ -208,7 +225,7 @@ class User implements UserInterface
      */
     public function getUsername()
     {
-        // TODO: Implement getUsername() method.
+        return $this->email;
     }
 
     /**
@@ -220,5 +237,43 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    /**
+     * Set role
+     *
+     * @param string $role
+     *
+     * @return User
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+    /**
+     * Set accessToken.
+     *
+     * @param string $accessToken
+     *
+     * @return User
+     */
+    public function setAccessToken($accessToken)
+    {
+        $this->accessToken = $accessToken;
+
+        return $this;
+    }
+
+    /**
+     * Get accessToken.
+     *
+     * @return string
+     */
+    public function getAccessToken()
+    {
+        return $this->accessToken;
     }
 }
