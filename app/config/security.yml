@@ -6,7 +6,7 @@ security:
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
         api_key_user_provider:
-          id: AppBundle\Security\ApiKeyUserProvider
+          id: AppBundle\Security\Authenticator\ApiKeyUserProvider
     firewalls:
         user:
             methods: [POST]
@@ -22,7 +22,7 @@ security:
             pattern: ^/api/(?!(doc|authorize)).*$
             stateless: true
             simple_preauth:
-                authenticator: AppBundle\Security\ApiKeyAuthenticator
+                authenticator: AppBundle\Security\Authenticator\ApiKeyAuthenticator
             provider: api_key_user_provider
 
         default:
