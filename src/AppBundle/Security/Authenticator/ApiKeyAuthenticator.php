@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Security;
+namespace AppBundle\Security\Authenticator;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

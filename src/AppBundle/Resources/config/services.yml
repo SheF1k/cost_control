@@ -1,16 +1,50 @@
 services:
     app.api_key_user_provider:
-        class: AppBundle\Security\ApiKeyUserProvider
+        class: AppBundle\Security\Authenticator\ApiKeyUserProvider
         arguments: [ "@doctrine.orm.entity_manager"]
+
     app.api_key_authenticator:
-        class:  AppBundle\Security\ApiKeyAuthenticator
+        class:  AppBundle\Security\Authenticator\ApiKeyAuthenticator
         public: false
+
     app.api_token.service:
         class: AppBundle\Service\ApiTokenService
         arguments: ["@security.password_encoder"]
+
     app.doctrine.user_entity_listener:
         class: AppBundle\Doctrine\UserEntityListener
         autowire: true
         tags:
             - { name: doctrine.event_subscriber }
 
+    app.security.access.super_admin_voter:
+        class:      AppBundle\Security\Voter\SuperAdminVoter
+        public:     false
+        tags:
+           - { name: security.voter }
+
+    app.security.access.owner_voter:
+        class:      AppBundle\Security\Voter\OwnerVoter
+        public:     false
+        arguments: ['@service_container']
+        tags:
+           - { name: security.voter }
+
+    app.authentication_entry_point:
+        class: AppBundle\Security\Authenticator\AuthenticationEntryPoint
+
+    app.authentication_handler:
+        class: AppBundle\Handler\AuthenticationHandler
+        arguments:
+            - '@jms_serializer'
+            - '@service_container'
+
+    app.email_and_password_auth.strategy:
+        class: AppBundle\Strategy\Auth\EmailAndPasswordAuthStrategy
+        arguments: ['@doctrine.orm.entity_manager', '@security.encoder_factory', '@app.api_token.service']
+
+    app.user_auth.service:
+        class: AppBundle\Service\UserAuthService
+        arguments:
+            -
+                - '@app.email_and_password_auth.strategy'

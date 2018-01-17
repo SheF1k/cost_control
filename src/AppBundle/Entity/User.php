@@ -77,7 +77,12 @@ class User implements UserInterface
      */
     protected $accessToken;
 
-
+    /**
+     * @JMS\Expose
+     * @JMS\Groups({"auth"})
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected $expirationDate;
 
     /**
      * Get id.
@@ -275,5 +280,39 @@ class User implements UserInterface
     public function getAccessToken()
     {
         return $this->accessToken;
+    }
+
+    /**
+     * Get role.
+     *
+     * @return string|null
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    /**
+     * Set expirationDate.
+     *
+     * @param \DateTime|null $expirationDate
+     *
+     * @return User
+     */
+    public function setExpirationDate($expirationDate = null)
+    {
+        $this->expirationDate = $expirationDate;
+
+        return $this;
+    }
+
+    /**
+     * Get expirationDate.
+     *
+     * @return \DateTime|null
+     */
+    public function getExpirationDate()
+    {
+        return $this->expirationDate;
     }
 }
