@@ -4,24 +4,19 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Exception\Authentication\UserNotFoundException;
-use AppBundle\Form\UserForm;
 use AppBundle\Service\UserAuthService;
-use Doctrine\ORM\EntityRepository;
-use FOS\RestBundle\Request\ParamFetcher;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Request;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 /**
- * Class UserController
+ * Class AuthController
  *
  * @Rest\NamePrefix("api_")
  * @Rest\RouteResource("Authorize", pluralize=false)
  */
-class AuthController extends BaseRestController
+class AuthController extends FOSRestController
 {
     /**
      * User authentication.
@@ -36,10 +31,9 @@ class AuthController extends BaseRestController
      */
     public function postAction(Request $request)
     {
-        $authService = $this->getAuthServcie();
+        $authService = $this->getAuthService();
         /** @var User $user */
         $user = $authService->authorize($request);
-
         if (false === $user) {
             throw new UserNotFoundException('');
         }
@@ -50,7 +44,7 @@ class AuthController extends BaseRestController
     /**
      * @return UserAuthService
      */
-    private function getAuthServcie()
+    private function getAuthService()
     {
         /**
          * @var UserAuthService $userAuthService

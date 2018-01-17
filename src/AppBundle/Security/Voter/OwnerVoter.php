@@ -39,7 +39,7 @@ class OwnerVoter implements VoterInterface
     {
         $reflectionClass = new \ReflectionClass($class);
 
-        return $reflectionClass->implementsInterface('Nanocoding\AuthBundle\Entity\HasOwnerInterface');
+        return $reflectionClass->implementsInterface('AppBundle\Entity\HasOwnerInterface');
     }
 
     public function vote(TokenInterface $token, $object, array $attributes)
