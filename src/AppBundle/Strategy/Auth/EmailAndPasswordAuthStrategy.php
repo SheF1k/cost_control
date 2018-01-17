@@ -6,11 +6,11 @@ use AppBundle\Entity\User;
 use AppBundle\Service\ApiTokenService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class EmailAndPasswordAuthStrategy implements AuthStrategyInterface
 {
-    /** @var EntityManager $em */
+    /** @var EntityManagerInterface $em */
     private $em;
 
     /** @var EncoderFactory $encoderFactory */
@@ -22,12 +22,12 @@ class EmailAndPasswordAuthStrategy implements AuthStrategyInterface
     /**
      * EmailAndPasswordAuthStrategy constructor.
      *
-     * @param EntityManager   $em
+     * @param EntityManagerInterface   $em
      * @param EncoderFactory  $encoderFactory
      * @param ApiTokenService $apiTokenService
      */
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         EncoderFactory $encoderFactory,
         ApiTokenService $apiTokenService
     ) {
@@ -46,7 +46,7 @@ class EmailAndPasswordAuthStrategy implements AuthStrategyInterface
 
         $user = $this->em
             ->getRepository('AppBundle:User')
-            ->findOneByEmail($email)
+            ->findOneBy(['email' => $email])
         ;
 
         if (!$user instanceof User) {

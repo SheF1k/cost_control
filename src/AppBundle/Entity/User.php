@@ -85,6 +85,36 @@ class User implements UserInterface
     protected $expirationDate;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $salt;
+
+    /**
+     * Set salt.
+     *
+     * @param string $salt
+     *
+     * @return User
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+
+        return $this;
+    }
+
+
+    /**
+     * Get salt.
+     *
+     * @return string
+     */
+    public function getSalt()
+    {
+        return $this->salt;
+    }
+
+    /**
      * Get id.
      *
      * @return int
@@ -209,18 +239,6 @@ class User implements UserInterface
     public function getRoles()
     {
         return array('ROLE_USER');
-    }
-
-    /**
-     * Returns the salt that was originally used to encode the password.
-     *
-     * This can return null if the password was not encoded using a salt.
-     *
-     * @return string|null The salt
-     */
-    public function getSalt()
-    {
-        // TODO: Implement getSalt() method.
     }
 
     /**

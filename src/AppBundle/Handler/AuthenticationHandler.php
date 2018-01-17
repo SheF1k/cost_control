@@ -2,7 +2,7 @@
 
 namespace AppBundle\Handler;
 
-use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -19,7 +19,7 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface, Au
     private $serializer;
     private $container;
 
-    public function __construct(\JMS\Serializer\Serializer $serializer, Container $container)
+    public function __construct(\JMS\Serializer\Serializer $serializer, ContainerInterface $container)
     {
         $this->serializer = $serializer;
         $this->container = $container;
@@ -41,7 +41,7 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface, Au
             /** @var \AppBundle\Entity\User $user */
             $user = $em
                 ->getRepository('AppBundle:User')
-                ->findOneByEmail($request->request->get('email'))
+                ->findOneBy(['email' => $request->request->get('email')])
             ;
             if ($user) {
                 $encoder_service = $this->container->get('security.encoder_factory');

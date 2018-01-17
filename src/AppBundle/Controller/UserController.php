@@ -42,6 +42,8 @@ class UserController extends BaseRestController
      * @Rest\QueryParam(name="_offset", requirements="\d+", nullable=true, strict=true)
      * @Rest\QueryParam(name="fullName", description="Full name")
      * @Rest\QueryParam(name="email", description="email")
+     * @param ParamFetcher $paramFetcher
+     * @return Response
      */
     public function cgetAction(ParamFetcher $paramFetcher)
     {
