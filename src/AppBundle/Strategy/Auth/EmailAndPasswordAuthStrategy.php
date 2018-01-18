@@ -44,10 +44,10 @@ class EmailAndPasswordAuthStrategy implements AuthStrategyInterface
         $email = $request->request->get('email');
         $password = $request->request->get('password');
 
+
         $user = $this->em
             ->getRepository('AppBundle:User')
-            ->findOneBy(['email' => $email])
-        ;
+            ->findOneBy(['email' => $email]);
 
         if (!$user instanceof User) {
             return false;
@@ -64,7 +64,6 @@ class EmailAndPasswordAuthStrategy implements AuthStrategyInterface
 
         $this->em->persist($user);
         $this->em->flush();
-
         return $user;
     }
 

@@ -1,4 +1,10 @@
 services:
+    app.doctrine.set_owner_listener:
+        class: AppBundle\Doctrine\SetOwnerListener
+        arguments: ['@security.token_storage']
+        tags:
+            - { name: doctrine.orm.entity_listener }
+
     app.api_key_user_provider:
         class: AppBundle\Security\Authenticator\ApiKeyUserProvider
         arguments: [ "@doctrine.orm.entity_manager"]
