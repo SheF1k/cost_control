@@ -1,6 +1,13 @@
 # To get started with security, check out the documentation:
 # https://symfony.com/doc/current/security.html
 security:
+    role_hierarchy:
+            ROLE_USER:
+              - ABILITY_REVENUE_OWNER
+              - ABILITY_REVENUE_CREATE
+              - ABILITY_REVENUE_UPDATE
+              - ABILITY_REVENUE_DELETE
+              - ABILITY_REVENUE_READ
     encoders:
         AppBundle\Entity\User: bcrypt
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded

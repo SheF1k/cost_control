@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Doctrine;
+namespace AppBundle\EventListener\DoctrineEntityListener;
 
 use AppBundle\Entity\User;
 use AppBundle\Service\ApiTokenService;

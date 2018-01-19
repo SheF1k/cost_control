@@ -6,6 +6,7 @@ use AppBundle\Entity\Revenue;
 use AppBundle\Form\RevenueForm;
 use Doctrine\ORM\EntityRepository;
 use FOS\RestBundle\Request\ParamFetcher;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -21,17 +22,18 @@ use Nelmio\ApiDocBundle\Annotation\Model;
 class RevenueController extends BaseRestController
 {
     /**
-     * @param Revenue $Revenue
+     * @param Revenue $revenue
      * @return Revenue
      *
      * @Rest\View(serializerGroups={"default"})
+     * @Security("is_granted('ABILITY_REVENUE_READ', revenue)")
      */
-    public function getAction(Revenue $Revenue = null)
+    public function getAction(Revenue $revenue = null)
     {
-        if (!$Revenue instanceof Revenue) {
+        if (!$revenue instanceof Revenue) {
             throw new NotFoundHttpException('Revenue not found');
         }
-        return $Revenue;
+        return $revenue;
     }
 
     /**
@@ -53,6 +55,7 @@ class RevenueController extends BaseRestController
         /** @var EntityRepository $repository */
         $repository = $this->getRepository('AppBundle:Revenue');
         $paramFetcher = $paramFetcher->all();
+        $paramFetcher['user'] = $this->getUser()->getId();
         return $this->matching($repository, $paramFetcher, null, ['default']);
     }
 
@@ -62,6 +65,7 @@ class RevenueController extends BaseRestController
      * @return \FOS\RestBundle\View\View|\Symfony\Component\Form\Form|\Symfony\Component\Form\FormInterface
      *
      * @throws \Exception
+     * @Security("is_granted('ABILITY_REVENUE_CREATE')")
      */
     public function postAction(Request $request)
     {
@@ -71,12 +75,13 @@ class RevenueController extends BaseRestController
     /**
      * Edit existing Revenue.
      * @param Request $request
-     * @param Revenue $Revenue
+     * @param Revenue $revenue
      * @return \FOS\RestBundle\View\View|\Symfony\Component\Form\Form|\Symfony\Component\Form\FormInterface
      *
      * @throws \Exception
+     * @Security("is_granted('ABILITY_REVENUE_UPDATE', revenue)")
      */
-    public function putAction(Request $request, Revenue $Revenue)
+    public function putAction(Request $request, Revenue $revenue)
     {
         $groups = [
             'serializerGroups' => [
@@ -90,7 +95,7 @@ class RevenueController extends BaseRestController
             ],
         ];
 
-        return $this->handleForm($request, RevenueForm::class, $Revenue, $groups, true);
+        return $this->handleForm($request, RevenueForm::class, $revenue, $groups, true);
     }
 
     /**
@@ -98,16 +103,17 @@ class RevenueController extends BaseRestController
      *
      * @Rest\View(statusCode=204)
      *
-     * @param Revenue $Revenue
+     * @param Revenue $revenue
      * @return Response
+     * @Security("is_granted('ABILITY_REVENUE_DELETE', revenue)")
      */
-    public function deleteAction(Revenue $Revenue = null)
+    public function deleteAction(Revenue $revenue = null)
     {
-        if (!$Revenue instanceof Revenue) {
+        if (!$revenue instanceof Revenue) {
             throw new NotFoundHttpException('Revenue not found');
         }
         $em = $this->getDoctrine()->getManager();
-        $em->remove($Revenue);
+        $em->remove($revenue);
         $em->flush();
         return null;
     }
