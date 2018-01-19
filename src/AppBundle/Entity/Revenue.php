@@ -11,6 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @JMS\ExclusionPolicy("all")
  * @ORM\Table(name="revenue")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\RevenueRepository")
+ * @ORM\EntityListeners({"AppBundle\EventListener\DoctrineEntityListener\SetOwnerListener"})
+ * @ORM\HasLifecycleCallbacks()
  */
 class Revenue implements HasOwnerInterface
 {
@@ -47,7 +49,6 @@ class Revenue implements HasOwnerInterface
      * @JMS\Expose
      * @JMS\Groups({"default"})
      * @ORM\Column(name="creationDate", type="datetime")
-     * @Assert\NotBlank()
      * @Assert\DateTime()
      */
     private $creationDate;
@@ -143,10 +144,11 @@ class Revenue implements HasOwnerInterface
      * @param \DateTime $creationDate
      *
      * @return Revenue
+     * @ORM\PrePersist()
      */
     public function setCreationDate($creationDate)
     {
-        $this->creationDate = $creationDate;
+        $this->creationDate = new \DateTime();
 
         return $this;
     }

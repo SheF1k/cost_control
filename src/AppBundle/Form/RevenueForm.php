@@ -14,7 +14,6 @@ class RevenueForm extends AbstractType
         $builder
             ->add('name')
             ->add('total')
-            ->add('creationDate', DateType::class, array('widget' => 'single_text'))
             ->add('isRegular')
             ->add('note');
     }
