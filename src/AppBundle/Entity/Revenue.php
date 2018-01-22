@@ -78,7 +78,13 @@ class Revenue implements HasOwnerInterface
      */
     private $note;
 
-
+    /**
+     * @var bool
+     * @JMS\Expose
+     * @JMS\Groups({"default"})
+     * @ORM\Column(name="isArchieved", type="boolean", nullable=true, options={"default" : false})
+     */
+    private $isArchieved = false;
 
     /**
      * Get id.
@@ -185,6 +191,30 @@ class Revenue implements HasOwnerInterface
     public function getIsRegular()
     {
         return $this->isRegular;
+    }
+
+    /**
+     * Set isArchieved.
+     *
+     * @param bool $isArchieved
+     *
+     * @return Revenue
+     */
+    public function setIsArchieved($isArchieved)
+    {
+        $this->isArchieved = $isArchieved;
+
+        return $this;
+    }
+
+    /**
+     * Get isArchieved.
+     *
+     * @return bool
+     */
+    public function getIsArchieved()
+    {
+        return $this->isArchieved;
     }
 
     /**

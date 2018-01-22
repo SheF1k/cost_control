@@ -8,6 +8,11 @@ security:
               - ABILITY_REVENUE_UPDATE
               - ABILITY_REVENUE_DELETE
               - ABILITY_REVENUE_READ
+              - ABILITY_TYPE_OWNER
+              - ABILITY_TYPE_CREATE
+              - ABILITY_TYPE_UPDATE
+              - ABILITY_TYPE_DELETE
+              - ABILITY_TYPE_READ
     encoders:
         AppBundle\Entity\User: bcrypt
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded

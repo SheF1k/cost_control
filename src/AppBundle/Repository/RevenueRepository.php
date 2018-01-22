@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\User;
+
 /**
  * RevenueRepository
  *
@@ -10,4 +12,23 @@ namespace AppBundle\Repository;
  */
 class RevenueRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function deleteByUser(User $user)
+    {
+        $qb = $this->createQueryBuilder("entity");
+        $result = $qb->delete('AppBundle:Revenue',"entity")
+            ->where($qb->expr()->eq('entity.user', $user->getId()))
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function updateIsArcievedByUser(User $user)
+    {
+        $qb = $this->createQueryBuilder("entity");
+        $result = $qb->update('AppBundle:Revenue',"entity")
+            ->where($qb->expr()->eq('entity.user', $user->getId()))
+            ->andWhere($qb->expr()->eq('entity.isArchieved', 0))
+            ->set('entity.isArchieved', true)
+            ->getQuery()
+            ->getResult();
+    }
 }

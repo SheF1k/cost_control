@@ -33,6 +33,7 @@ class RevenueController extends BaseRestController
         if (!$revenue instanceof Revenue) {
             throw new NotFoundHttpException('Revenue not found');
         }
+
         return $revenue;
     }
 
@@ -47,6 +48,7 @@ class RevenueController extends BaseRestController
      * @Rest\QueryParam(name="total", description="Total")
      * @Rest\QueryParam(name="creationDate", description="Date of creation")
      * @Rest\QueryParam(name="isRegular", description="Regular")
+     * @Rest\QueryParam(name="isArchieved", description="Archieved")
      * @param ParamFetcher $paramFetcher
      * @return Response
      */
@@ -56,6 +58,7 @@ class RevenueController extends BaseRestController
         $repository = $this->getRepository('AppBundle:Revenue');
         $paramFetcher = $paramFetcher->all();
         $paramFetcher['user'] = $this->getUser()->getId();
+
         return $this->matching($repository, $paramFetcher, null, ['default']);
     }
 
@@ -115,6 +118,41 @@ class RevenueController extends BaseRestController
         $em = $this->getDoctrine()->getManager();
         $em->remove($revenue);
         $em->flush();
+
         return null;
     }
+
+    /**
+     * Delete all revenues.
+     *
+     * @Rest\View(statusCode=204)
+     *
+     * @return Response
+     */
+    public function cdeleteAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->getRepository('AppBundle:Revenue')
+            ->deleteByUser($this->getUser());
+
+        return null;
+    }
+
+    /**
+     * Archive all revenues.
+     *
+     * @Rest\View(statusCode=204)
+     *
+     * @return Response
+     */
+    public function archiveAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->getRepository('AppBundle:Revenue')
+            ->updateIsArcievedByUser($this->getUser());
+
+        return null;
+    }
+
+
 }

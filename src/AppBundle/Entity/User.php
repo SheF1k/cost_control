@@ -53,7 +53,7 @@ class User implements UserInterface
 
     /**
      * @JMS\Expose
-     * @JMS\Groups({"default", "auth"})
+     * @JMS\Groups({"auth"})
      * @ORM\Column(type="string", nullable=false)
      */
     private $password;
@@ -70,7 +70,7 @@ class User implements UserInterface
      * @JMS\Groups({"default", "auth"})
      * @ORM\Column(type="string", nullable=true, options={"default" : "ROLE_USER"})
      */
-    protected $role;
+    protected $role = "ROLE_USER";
 
     /**
      * @JMS\Expose

@@ -6,27 +6,24 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class RevenueForm extends AbstractType
+class CostTypeForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('total')
-            ->add('isRegular')
-            ->add('note');
+            ->add('name');
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Revenue',
+            'data_class' => 'AppBundle\Entity\CostType',
             'allow_extra_fields' => true,
         ));
     }
 
     public function getBlockPrefix()
     {
-        return 'app_bundle_revenue';
+        return 'app_bundle_cost_type';
     }
 }
