@@ -13,6 +13,11 @@ security:
               - ABILITY_TYPE_UPDATE
               - ABILITY_TYPE_DELETE
               - ABILITY_TYPE_READ
+              - ABILITY_COST_OWNER
+              - ABILITY_COST_CREATE
+              - ABILITY_COST_UPDATE
+              - ABILITY_COST_DELETE
+              - ABILITY_COST_READ
     encoders:
         AppBundle\Entity\User: bcrypt
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded

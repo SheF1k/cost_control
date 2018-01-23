@@ -7,17 +7,19 @@ use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Revenue
+ * Cost
+ *
  * @JMS\ExclusionPolicy("all")
- * @ORM\Table(name="revenue")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\RevenueRepository")
+ * @ORM\Table(name="cost")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CostRepository")
  * @ORM\EntityListeners({"AppBundle\EventListener\DoctrineEntityListener\SetOwnerListener"})
  * @ORM\HasLifecycleCallbacks()
  */
-class Revenue implements HasOwnerInterface
+class Cost implements HasOwnerInterface
 {
     /**
      * @var int
+     *
      * @JMS\Expose
      * @JMS\Groups({"default", "Default"})
      * @ORM\Column(name="id", type="integer")
@@ -28,6 +30,7 @@ class Revenue implements HasOwnerInterface
 
     /**
      * @var string
+     *
      * @JMS\Expose
      * @JMS\Groups({"default"})
      * @ORM\Column(name="name", type="string", length=255)
@@ -37,15 +40,17 @@ class Revenue implements HasOwnerInterface
 
     /**
      * @var float
+     *
      * @JMS\Expose
      * @JMS\Groups({"default"})
-     * @ORM\Column(name="total", type="float")
+     * @ORM\Column(name="sum", type="float")
      * @Assert\NotBlank()
      */
-    private $total;
+    private $sum;
 
     /**
      * @var \DateTime
+     *
      * @JMS\Expose
      * @JMS\Groups({"default"})
      * @ORM\Column(name="creationDate", type="datetime")
@@ -55,11 +60,12 @@ class Revenue implements HasOwnerInterface
 
     /**
      * @var bool|null
+     *
      * @JMS\Expose
      * @JMS\Groups({"default"})
      * @ORM\Column(name="isRegular", type="boolean", nullable=true, options={"default" : false})
      */
-    private $isRegular;
+    private $isRegular = false;
 
     /**
      * @JMS\Expose
@@ -67,7 +73,7 @@ class Revenue implements HasOwnerInterface
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    protected $user;
+    private $user;
 
     /**
      * @var string
@@ -78,12 +84,13 @@ class Revenue implements HasOwnerInterface
     private $note;
 
     /**
-     * @var bool
      * @JMS\Expose
      * @JMS\Groups({"default"})
-     * @ORM\Column(name="isArchieved", type="boolean", nullable=true, options={"default" : false})
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CostType")
+     * @ORM\JoinColumn(name="cost_type_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
-    private $isArchieved = false;
+    private $type;
+
 
     /**
      * Get id.
@@ -100,7 +107,7 @@ class Revenue implements HasOwnerInterface
      *
      * @param string $name
      *
-     * @return Revenue
+     * @return Cost
      */
     public function setName($name)
     {
@@ -120,34 +127,34 @@ class Revenue implements HasOwnerInterface
     }
 
     /**
-     * Set total.
+     * Set sum.
      *
-     * @param float $total
+     * @param float $sum
      *
-     * @return Revenue
+     * @return Cost
      */
-    public function setTotal($total)
+    public function setSum($sum)
     {
-        $this->total = $total;
+        $this->sum = $sum;
 
         return $this;
     }
 
     /**
-     * Get total.
+     * Get sum.
      *
      * @return float
      */
-    public function getTotal()
+    public function getSum()
     {
-        return $this->total;
+        return $this->sum;
     }
 
     /**
      * Set creationDate.
      *
      *
-     * @return Revenue
+     * @return Cost
      * @ORM\PrePersist()
      */
     public function setCreationDate()
@@ -172,7 +179,7 @@ class Revenue implements HasOwnerInterface
      *
      * @param bool|null $isRegular
      *
-     * @return Revenue
+     * @return Cost
      */
     public function setIsRegular($isRegular = null)
     {
@@ -192,43 +199,11 @@ class Revenue implements HasOwnerInterface
     }
 
     /**
-     * Set isArchieved.
-     *
-     * @param bool $isArchieved
-     *
-     * @return Revenue
-     */
-    public function setIsArchieved($isArchieved)
-    {
-        $this->isArchieved = $isArchieved;
-
-        return $this;
-    }
-
-    /**
-     * Get isArchieved.
-     *
-     * @return bool
-     */
-    public function getIsArchieved()
-    {
-        return $this->isArchieved;
-    }
-
-    /**
-     * @return User[]
-     */
-    public function getOwners()
-    {
-        return [$this->getUser()];
-    }
-
-    /**
      * Set user
      *
      * @param \AppBundle\Entity\User $user
      *
-     * @return Revenue
+     * @return Cost
      */
     public function setUser(User $user = null)
     {
@@ -252,7 +227,7 @@ class Revenue implements HasOwnerInterface
      *
      * @param string $note
      *
-     * @return Revenue
+     * @return Cost
      */
     public function setNote($note)
     {
@@ -269,5 +244,37 @@ class Revenue implements HasOwnerInterface
     public function getNote()
     {
         return $this->note;
+    }
+
+    /**
+     * Set type.
+     *
+     * @param CostType
+     *
+     * @return Cost
+     */
+    public function setType(CostType $type = null)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type.
+     *
+     * @return CostType
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return User[]
+     */
+    public function getOwners()
+    {
+        return [$this->getUser()];
     }
 }

@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityRepository;
 use FOS\RestBundle\Request\ParamFetcher;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -25,15 +24,11 @@ class CostTypeController extends BaseRestController
      * @param CostType $cost_type
      * @return CostType
      *
-     * @Rest\View(serializerGroups={"default"})
+     * @Rest\View(serializerGroups={"default", "detail"})
      * @Security("is_granted('ABILITY_TYPE_READ', cost_type)")
      */
     public function getAction(CostType $cost_type = null)
     {
-        if (!$cost_type instanceof CostType) {
-            throw new NotFoundHttpException('CostType not found');
-        }
-
         return $cost_type;
     }
 
@@ -55,7 +50,7 @@ class CostTypeController extends BaseRestController
         $paramFetcher = $paramFetcher->all();
         $paramFetcher['user'] = $this->getUser()->getId();
 
-        return $this->matching($repository, $paramFetcher, null, ['default']);
+        return $this->matching($repository, $paramFetcher, null, ['default', 'detail']);
     }
 
     /**
@@ -108,9 +103,6 @@ class CostTypeController extends BaseRestController
      */
     public function deleteAction(CostType $cost_type = null)
     {
-        if (!$cost_type instanceof CostType) {
-            throw new NotFoundHttpException('CostType not found');
-        }
         $em = $this->getDoctrine()->getManager();
         $em->remove($cost_type);
         $em->flush();

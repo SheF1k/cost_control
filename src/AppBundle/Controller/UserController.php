@@ -7,7 +7,6 @@ use AppBundle\Form\UserForm;
 use Doctrine\ORM\EntityRepository;
 use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -28,9 +27,6 @@ class UserController extends BaseRestController
      */
     public function getAction(User $user = null)
     {
-        if (!$user instanceof User) {
-            throw new NotFoundHttpException('User not found');
-        }
         return $user;
     }
 
@@ -114,12 +110,10 @@ class UserController extends BaseRestController
      */
     public function deleteAction(User $user = null)
     {
-        if (!$user instanceof User) {
-            throw new NotFoundHttpException('User not found');
-        }
         $em = $this->getDoctrine()->getManager();
         $em->remove($user);
         $em->flush();
+
         return null;
     }
 }

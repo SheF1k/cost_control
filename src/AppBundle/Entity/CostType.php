@@ -40,7 +40,7 @@ class CostType implements HasOwnerInterface
 
     /**
      * @JMS\Expose
-     * @JMS\Groups({"default"})
+     * @JMS\Groups({"detail"})
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */

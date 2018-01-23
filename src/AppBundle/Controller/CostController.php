@@ -2,8 +2,8 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Revenue;
-use AppBundle\Form\RevenueForm;
+use AppBundle\Entity\Cost;
+use AppBundle\Form\CostForm;
 use Doctrine\ORM\EntityRepository;
 use FOS\RestBundle\Request\ParamFetcher;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -13,44 +13,44 @@ use Symfony\Component\HttpFoundation\Request;
 use Nelmio\ApiDocBundle\Annotation\Model;
 
 /**
- * Class RevenueController
+ * Class CostController
  *
  * @Rest\NamePrefix("api_")
- * @Rest\RouteResource("Revenue")
+ * @Rest\RouteResource("Cost")
  */
-class RevenueController extends BaseRestController
+class CostController extends BaseRestController
 {
     /**
-     * @param Revenue $revenue
-     * @return Revenue
+     * @param Cost $cost
+     * @return Cost
      *
      * @Rest\View(serializerGroups={"default"})
-     * @Security("is_granted('ABILITY_REVENUE_READ', revenue)")
+     * @Security("is_granted('ABILITY_COST_READ', cost)")
      */
-    public function getAction(Revenue $revenue = null)
+    public function getAction(Cost $cost = null)
     {
-        return $revenue;
+        return $cost;
     }
 
     /**
-     * Return Revenues.
+     * Return Costs.
      *
      * @Rest\QueryParam(name="_sort")
      * @Rest\QueryParam(name="_limit",  requirements="\d+", nullable=true, strict=true)
      * @Rest\QueryParam(name="_offset", requirements="\d+", nullable=true, strict=true)
      * @Rest\QueryParam(name="user", description="User")
      * @Rest\QueryParam(name="name", description="Name")
-     * @Rest\QueryParam(name="total", description="Total")
+     * @Rest\QueryParam(name="type", description="Type of cost")
+     * @Rest\QueryParam(name="sum", description="Total")
      * @Rest\QueryParam(name="creationDate", description="Date of creation")
      * @Rest\QueryParam(name="isRegular", description="Regular")
-     * @Rest\QueryParam(name="isArchieved", description="Archieved")
      * @param ParamFetcher $paramFetcher
      * @return Response
      */
     public function cgetAction(ParamFetcher $paramFetcher)
     {
         /** @var EntityRepository $repository */
-        $repository = $this->getRepository('AppBundle:Revenue');
+        $repository = $this->getRepository('AppBundle:Cost');
         $paramFetcher = $paramFetcher->all();
         $paramFetcher['user'] = $this->getUser()->getId();
 
@@ -58,28 +58,38 @@ class RevenueController extends BaseRestController
     }
 
     /**
-     * Create a new Revenue.
+     * Create a new Cost.
      * @param Request $request
      * @return \FOS\RestBundle\View\View|\Symfony\Component\Form\Form|\Symfony\Component\Form\FormInterface
      *
      * @throws \Exception
-     * @Security("is_granted('ABILITY_REVENUE_CREATE')")
+     * @Security("is_granted('ABILITY_COST_CREATE')")
      */
     public function postAction(Request $request)
     {
-        return $this->handleForm($request, RevenueForm::class, new Revenue());
+        $groups = [
+            'serializerGroups' => [
+                'default',
+            ],
+            'formOptions' => [
+                'validation_groups' => [
+                    'default',
+                ],
+            ],
+        ];
+        return $this->handleForm($request, CostForm::class, new Cost(), $groups);
     }
 
     /**
-     * Edit existing Revenue.
+     * Edit existing Cost.
      * @param Request $request
-     * @param Revenue $revenue
+     * @param Cost $cost
      * @return \FOS\RestBundle\View\View|\Symfony\Component\Form\Form|\Symfony\Component\Form\FormInterface
      *
      * @throws \Exception
-     * @Security("is_granted('ABILITY_REVENUE_UPDATE', revenue)")
+     * @Security("is_granted('ABILITY_COST_UPDATE', cost)")
      */
-    public function putAction(Request $request, Revenue $revenue)
+    public function putAction(Request $request, Cost $cost)
     {
         $groups = [
             'serializerGroups' => [
@@ -93,58 +103,25 @@ class RevenueController extends BaseRestController
             ],
         ];
 
-        return $this->handleForm($request, RevenueForm::class, $revenue, $groups, true);
+        return $this->handleForm($request, CostForm::class, $cost, $groups, true);
     }
 
     /**
-     * Delete Revenue by id.
+     * Delete Cost by id.
      *
      * @Rest\View(statusCode=204)
      *
-     * @param Revenue $revenue
+     * @param Cost $cost
      * @return Response
-     * @Security("is_granted('ABILITY_REVENUE_DELETE', revenue)")
+     * @Security("is_granted('ABILITY_COST_DELETE', cost)")
      */
-    public function deleteAction(Revenue $revenue = null)
+    public function deleteAction(Cost $cost = null)
     {
         $em = $this->getDoctrine()->getManager();
-        $em->remove($revenue);
+        $em->remove($cost);
         $em->flush();
 
         return null;
     }
-
-    /**
-     * Delete all revenues.
-     *
-     * @Rest\View(statusCode=204)
-     *
-     * @return Response
-     */
-    public function cdeleteAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $em->getRepository('AppBundle:Revenue')
-            ->deleteByUser($this->getUser());
-
-        return null;
-    }
-
-    /**
-     * Archive all revenues.
-     *
-     * @Rest\View(statusCode=204)
-     *
-     * @return Response
-     */
-    public function archiveAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $em->getRepository('AppBundle:Revenue')
-            ->updateIsArcievedByUser($this->getUser());
-
-        return null;
-    }
-
 
 }
