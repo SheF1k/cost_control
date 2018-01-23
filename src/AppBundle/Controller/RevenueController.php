@@ -67,7 +67,18 @@ class RevenueController extends BaseRestController
      */
     public function postAction(Request $request)
     {
-        return $this->handleForm($request, RevenueForm::class, new Revenue());
+        $groups = [
+            'serializerGroups' => [
+                'default',
+            ],
+            'formOptions' => [
+                'validation_groups' => [
+                    'default',
+                    'Default',
+                ],
+            ],
+        ];
+        return $this->handleForm($request, RevenueForm::class, new Revenue(), $groups);
     }
 
     /**

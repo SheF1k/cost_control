@@ -63,7 +63,17 @@ class CostTypeController extends BaseRestController
      */
     public function postAction(Request $request)
     {
-        return $this->handleForm($request, CostTypeForm::class, new CostType());
+        $groups = [
+            'serializerGroups' => [
+                'default',
+            ],
+            'formOptions' => [
+                'validation_groups' => [
+                    'default',
+                ],
+            ],
+        ];
+        return $this->handleForm($request, CostTypeForm::class, new CostType(), $groups);
     }
 
     /**
