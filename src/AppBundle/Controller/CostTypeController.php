@@ -70,8 +70,9 @@ class CostTypeController extends BaseRestController
             'formOptions' => [
                 'validation_groups' => [
                     'default',
-                ],
-            ],
+                    'Default'
+                ]
+            ]
         ];
         return $this->handleForm($request, CostTypeForm::class, new CostType(), $groups);
     }
@@ -94,9 +95,9 @@ class CostTypeController extends BaseRestController
             'formOptions' => [
                 'validation_groups' => [
                     'default',
-                    'Default',
-                ],
-            ],
+                    'Default'
+                ]
+            ]
         ];
 
         return $this->handleForm($request, CostTypeForm::class, $cost_type, $groups, true);
