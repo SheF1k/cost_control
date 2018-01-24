@@ -15,7 +15,8 @@ class CostForm extends AbstractType
             ->add('sum')
             ->add('isRegular')
             ->add('note')
-            ->add('type');
+            ->add('type')
+            ->add('period');
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\Constraints as AppAssert;
 
 /**
  * Cost
@@ -91,6 +92,14 @@ class Cost implements HasOwnerInterface
      */
     private $type;
 
+    /**
+     * @var string
+     * @JMS\Expose
+     * @JMS\Groups({"default"})
+     * @ORM\Column(name="period", type="smallint", nullable=true)
+     * @AppAssert\RevenuePeriod()
+     */
+    private $period;
 
     /**
      * Get id.
@@ -276,5 +285,29 @@ class Cost implements HasOwnerInterface
     public function getOwners()
     {
         return [$this->getUser()];
+    }
+
+    /**
+     * Set period.
+     *
+     * @param int|null $period
+     *
+     * @return Cost
+     */
+    public function setPeriod($period = null)
+    {
+        $this->period = $period;
+
+        return $this;
+    }
+
+    /**
+     * Get period.
+     *
+     * @return int|null
+     */
+    public function getPeriod()
+    {
+        return $this->period;
     }
 }

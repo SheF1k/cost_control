@@ -74,9 +74,9 @@ class RevenueController extends BaseRestController
             'formOptions' => [
                 'validation_groups' => [
                     'default',
-                    'Default',
+                    'Default'
                 ],
-            ],
+            ]
         ];
         return $this->handleForm($request, RevenueForm::class, new Revenue(), $groups);
     }

@@ -14,7 +14,8 @@ class RevenueForm extends AbstractType
             ->add('name')
             ->add('total')
             ->add('isRegular')
-            ->add('note');
+            ->add('note')
+            ->add('period');
     }
 
     public function configureOptions(OptionsResolver $resolver)

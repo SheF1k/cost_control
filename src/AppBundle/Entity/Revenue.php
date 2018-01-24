@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\Constraints as AppAssert;
 
 /**
  * Revenue
@@ -84,6 +85,15 @@ class Revenue implements HasOwnerInterface
      * @ORM\Column(name="isArchieved", type="boolean", nullable=true, options={"default" : false})
      */
     private $isArchieved = false;
+
+    /**
+     * @var string
+     * @JMS\Expose
+     * @JMS\Groups({"default"})
+     * @ORM\Column(name="period", type="smallint", nullable=true)
+     * @AppAssert\RevenuePeriod()
+     */
+    private $period;
 
     /**
      * Get id.
@@ -269,5 +279,29 @@ class Revenue implements HasOwnerInterface
     public function getNote()
     {
         return $this->note;
+    }
+
+    /**
+     * Set period.
+     *
+     * @param int|null $period
+     *
+     * @return Revenue
+     */
+    public function setPeriod($period = null)
+    {
+        $this->period = $period;
+
+        return $this;
+    }
+
+    /**
+     * Get period.
+     *
+     * @return int|null
+     */
+    public function getPeriod()
+    {
+        return $this->period;
     }
 }
