@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\User;
+use AppBundle\Repository\Traits\ExportTrait;
 
 /**
  * RevenueRepository
@@ -12,6 +13,7 @@ use AppBundle\Entity\User;
  */
 class RevenueRepository extends \Doctrine\ORM\EntityRepository
 {
+    use ExportTrait;
     public function deleteByUser(User $user)
     {
         $qb = $this->createQueryBuilder("entity");

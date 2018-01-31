@@ -27,13 +27,18 @@ class ExportService
 
     public function generatePdf(User $user)
     {
-        $cost = $this->em->getRepository('AppBundle:Cost')->getCostsForLastMonth($user);
+        $cost = $this->em->getRepository('AppBundle:Cost')->getDataForLastMonth($user);
+        $revenue = $this->em->getRepository('AppBundle:Revenue')->getDataForLastMonth($user);
         $html = $this->templating->render('::export.html.twig', array(
-            'cost'  => $cost
+            'costs'  => $cost,
+            'revenues' => $revenue
         ));
+        $creation_date = new \DateTime();
+        $creation_date = $creation_date->format('Y-m-d H:i:s');
+        $file_name = $creation_date . 'pdf';
         return new PdfResponse(
             $this->generator->getOutputFromHtml($html),
-            'file.pdf'
+            $file_name
         );
     }
 }

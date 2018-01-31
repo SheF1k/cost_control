@@ -1,6 +1,48 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
     <body>
-        {{ "Hi" }}
+    <h1>Expenses</h1>
+        <table>
+            <tr>
+                <td>Name</td>
+                <td>Total sum</td>
+                <td>Date of creation</td>
+                <td>Note</td>
+            </tr>
+            {% for cost in costs %}
+                <tr>
+                    <td>{{ cost.name }}</td>
+                    <td>{{ cost.sum }}</td>
+                    <td>{{ cost.creationDate|date('Y-m-d H:i:s') }}</td>
+                    <td>{{ cost.note }}</td>
+                </tr>
+            {% endfor %}
+
+        </table>
+    <h1>Revenues</h1>
+    <table>
+        <tr>
+            <td>Name</td>
+            <td>Total sum</td>
+            <td>Date of creation</td>
+            <td>Note</td>
+        </tr>
+        {% for revenue in revenues %}
+            <tr>
+                <td>{{ revenue.name }}</td>
+                <td>{{ revenue.total }}</td>
+                <td>{{ revenue.creationDate|date('Y-m-d H:i:s') }}</td>
+                <td>{{ revenue.note }}</td>
+            </tr>
+        {% endfor %}
+
+    </table>
     </body>
 </html>
