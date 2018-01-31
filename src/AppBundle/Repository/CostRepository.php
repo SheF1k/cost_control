@@ -14,9 +14,5 @@ use AppBundle\Repository\Traits\ExportTrait;
 class CostRepository extends \Doctrine\ORM\EntityRepository
 {
     use ExportTrait;
-    public function getCostsForLastMonth(User $user)
-    {
-        $qb = $this->createQueryBuilder("entity");
-        return $this->getData($user, $qb);
-    }
+
 }
