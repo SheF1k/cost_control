@@ -2,6 +2,9 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\User;
+use AppBundle\Repository\Traits\ExportTrait;
+
 /**
  * CostRepository
  *
@@ -10,4 +13,10 @@ namespace AppBundle\Repository;
  */
 class CostRepository extends \Doctrine\ORM\EntityRepository
 {
+    use ExportTrait;
+    public function getCostsForLastMonth(User $user)
+    {
+        $qb = $this->createQueryBuilder("entity");
+        return $this->getData($user, $qb);
+    }
 }

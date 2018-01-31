@@ -31,6 +31,8 @@ framework:
     assets: ~
     php_errors:
         log: true
+    templating:
+        engines: ['twig']
 
 # Twig Configuration
 twig:
@@ -81,3 +83,9 @@ nelmio_api_doc:
     routes:
         path_patterns: # an array of regexps
             - ^/api(?!/doc$)
+
+knp_snappy:
+    pdf:
+        enabled:    true
+        binary:     /usr/bin/wkhtmltopdf
+        options:    []

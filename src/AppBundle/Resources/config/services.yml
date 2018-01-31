@@ -11,6 +11,10 @@ services:
         class: AppBundle\Service\ApiTokenService
         arguments: ["@security.password_encoder"]
 
+    app.export_service:
+            class: AppBundle\Service\ExportService
+            arguments: ["@knp_snappy.pdf", "@doctrine.orm.entity_manager", "@templating"]
+
     app.doctrine.user_entity_listener:
         class: AppBundle\EventListener\DoctrineEntityListener\UserEntityListener
         autowire: true
